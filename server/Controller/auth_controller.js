@@ -5,6 +5,8 @@ import jwt from "jsonwebtoken";
 
 //for getting all users
 const getuser = async (req, res) => {
+
+    dotenv.config();
     try {
         const users = await User.find();
         if (!users) {
@@ -20,6 +22,7 @@ const getuser = async (req, res) => {
        
     return res.status(200).json({
       success: true,
+      token,
       users: users.map(u => ({
         _id: u._id,
         name: u.name,

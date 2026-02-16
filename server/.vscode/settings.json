@@ -1,10 +1,14 @@
 {
-  "editor.quickSuggestions": false,
+  "editor.quickSuggestions": {
+    "comments": "off",
+    "strings": "off",
+    "other": "off"
+  },
   "editor.suggestOnTriggerCharacters": false,
   "editor.acceptSuggestionOnEnter": "off",
   "editor.inlineSuggest.enabled": false,
   "editor.suggest.showSnippets": false,
-  "editor.wordBasedSuggestions": false,
+  "editor.wordBasedSuggestions": "off",
   "editor.tabCompletion": "off",
   "javascript.suggest.completeFunctionCalls": false,
   "typescript.suggest.completeFunctionCalls": false
