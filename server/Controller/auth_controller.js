@@ -1,4 +1,5 @@
 import User from "../Models/User.js";
+import bcrypt from "bcrypt";
 
 import jwt from "jsonwebtoken";
 
@@ -33,7 +34,14 @@ const createUSer = async (req, res) => {
         if (existing) {
             return res.status(400).json({ message: "Email already in use" });
         }
-        const newuser = new User({ name, email, password });
+
+         const hashpass =await bcrypt.hash(password, 10 );
+
+           
+
+
+
+        const newuser = new User({ name, email, hashpass });
         await newuser.save();
         return res.status(201).json({ success: true, user: newuser });
     } catch (error) {

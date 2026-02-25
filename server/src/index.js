@@ -16,12 +16,11 @@ connectDb();
 app.use(cors());
 app.use(express.json());
 
-app.get("/",(req,res)=>{res.send("server is running ");});
+
 app.get("/User", authController.getuser);
-app.get("/hell",(req,res)=>{res.send("hello from hell")})
+
 
 app.post("/login", authController.loginUser);
-
 app.post("/User",authController.createUSer);
 
 app.listen(PORT ,()=>{console.log(`server is running on port ${PORT}`)});
