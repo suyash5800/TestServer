@@ -66,7 +66,7 @@ const loginUser = async (req, res) => {
             return res.status(500).json({ message: "Server misconfigured: JWT_KEY missing" });
         }
         const token = jwt.sign({ id: user._id, name: user.name }, jwt_key, { expiresIn: "1d" });
-        return res.status(200).json({ success: true, token });
+        return res.status(200).json({ success: true, access_token:token});
     } catch (error) {
         return res.status(500).json({ success: false, error: error.message });
     }
