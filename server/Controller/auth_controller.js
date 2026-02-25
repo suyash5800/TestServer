@@ -37,11 +37,8 @@ const createUSer = async (req, res) => {
 
          const hashpass =await bcrypt.hash(password, 10 );
 
-           
 
-
-
-        const newuser = new User({ name, email, hashpass });
+        const newuser = new User({ name, email, password:hashpass });
         await newuser.save();
         return res.status(201).json({ success: true, user: newuser });
     } catch (error) {
