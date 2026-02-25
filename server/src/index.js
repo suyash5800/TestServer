@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+import cookieParser from "cookei-parser";
 
 import authController from "../Controller/auth_controller.js";
 import connectDb from "../Database_connection/dbconnection.js";
@@ -14,6 +15,7 @@ connectDb();
 
 
 app.use(cors());
+app.use(cookieParser())
 app.use(express.json());
 
 
