@@ -25,7 +25,7 @@ const getuser = async (req, res) => {
 };
 
 // register new user
-const createUSer = async (req, res) => {
+const createUser = async (req, res) => {
     try {
         const { name, email, password } = req.body;
         if (!name || !email || !password) {
@@ -88,7 +88,7 @@ const loginUser = async (req, res) => {
             { expiresIn: "1d" }
         );
 
-        res.cookie("token", token);
+       res.cookie("token", token);
 
         return res.status(200).json({
             success: true,
@@ -104,4 +104,4 @@ const loginUser = async (req, res) => {
     }
 };
 
-export default { getuser, createUSer, loginUser };
+export default { getuser, createUser, loginUser };

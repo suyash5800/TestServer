@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser";
 
 import authController from "../Controller/auth_controller.js";
 import connectDb from "../Database_connection/dbconnection.js";
+import  authmiddleware from "../middelware/verifytoken.js";
 
 dotenv.config();
 
@@ -14,18 +15,29 @@ const PORT = process.env.PORT;
 connectDb();
 
 
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://um-stay-client.vercel.app/"
+];
+
 app.use(cors({
-    origin: "https://um-stay-client.vercel.app/",
-    credentials: true
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true
 }));
 app.use(cookieParser())
 app.use(express.json());
 
 
-app.get("/User", authController.getuser);
+app.get("/getUser", authController.getuser);
 
 
-app.post("/login", authController.loginUser);
-app.post("/User",authController.createUSer);
+app.post("/login",authController.loginUser);
+app.post("/User",authController.createUser);
 
 app.listen(PORT ,()=>{console.log(`server is running on port ${PORT}`)});
