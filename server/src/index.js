@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import cookieParser from "cookei-parser";
+import cookieParser from "cookie-parser";
 
 import authController from "../Controller/auth_controller.js";
 import connectDb from "../Database_connection/dbconnection.js";
@@ -9,12 +9,15 @@ import connectDb from "../Database_connection/dbconnection.js";
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 8535;
+const PORT = process.env.PORT;
 
 connectDb();
 
 
-app.use(cors());
+app.use(cors({
+    origin: "https://um-stay-client.vercel.app/",
+    credentials: true
+}));
 app.use(cookieParser())
 app.use(express.json());
 
