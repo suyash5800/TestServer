@@ -4,7 +4,7 @@ import bcrypt from "bcrypt";
 
 import jwt from "jsonwebtoken";
 
-// get all users (protected route)
+
 const getuser = async (req, res) => {
     try {
 
@@ -33,7 +33,7 @@ const getuser = async (req, res) => {
         });
     }
 };
-// register new user
+
 const createUser = async (req, res) => {
     try {
         const { name, email, password } = req.body;
@@ -64,7 +64,7 @@ const createUser = async (req, res) => {
     }
 };
 
-// login handler
+
 const loginUser = async (req, res) => {
     try {
         const { email, password } = req.body;
