@@ -98,10 +98,10 @@ const loginUser = async (req, res) => {
         );
 
         res.cookie("token", token, {
-            httpOnly: true,     // Protects against XSS
-            secure: true,       // Required for sameSite: "none"
-            sameSite: "none",   // Allows cross-site cookie sharing (Vercel to Render)
-            maxAge: 24 * 60 * 60 * 1000 // 1 day
+            httpOnly: true,   
+            secure: true,      
+            sameSite: "none",  
+            maxAge: 24 * 60 * 60 * 1000 
         });
 
 
