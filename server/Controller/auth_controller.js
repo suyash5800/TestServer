@@ -8,7 +8,12 @@ import jwt from "jsonwebtoken";
 const getuser = async (req, res) => {
     try {
 
-        const user = await User.findById(req.userId).select("-password");
+         if(!req.userId)
+            {
+                return res.status(404).json({success:false, message:"Unauthorized access"});
+            }
+
+            const user = await User.findById(req.UserId).select("-password");
 
         if (!user) {
             return res.status(404).json({
