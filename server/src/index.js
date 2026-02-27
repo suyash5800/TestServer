@@ -34,7 +34,7 @@ app.use(cookieParser())
 app.use(express.json());
 
 
-app.get("/getUser", authController.getuser);
+app.get("/getUser", authmiddleware ,authController.getuser);
 
 
 app.post("/login",authController.loginUser);
