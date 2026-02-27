@@ -92,6 +92,7 @@ const loginUser = async (req, res) => {
 
         return res.status(200).json({
             success: true,
+            token: token,
             user: {
                 _id: user._id,
                 name: user.name,

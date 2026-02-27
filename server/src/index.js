@@ -38,6 +38,6 @@ app.get("/getUser", authController.getuser);
 
 
 app.post("/login",authController.loginUser);
-app.post("/User",authController.createUser);
+app.post("/registor",authController.createUser);
 
 app.listen(PORT ,()=>{console.log(`server is running on port ${PORT}`)});
