@@ -104,6 +104,8 @@ const loginUser = async (req, res) => {
             maxAge: 24 * 60 * 60 * 1000 
         });
 
+        return res.status(200).json({success: true, message:"succesfully login"});
+
 
 
     } catch (error) {
