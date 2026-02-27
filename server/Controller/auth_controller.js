@@ -7,23 +7,32 @@ import jwt from "jsonwebtoken";
 // get all users (protected route)
 const getuser = async (req, res) => {
     try {
-        const users = await User.find();
-        if (!users || users.length === 0) {
-            return res.status(404).json({ success: false, message: "No users found" });
+       
+        const user = await User.findById(req.userId).select("-password");
+
+        if (!user) {
+            return res.status(404).json({ 
+                success: false, 
+                message: "User profile not found" 
+            });
         }
+
         return res.status(200).json({
             success: true,
-            users: users.map(u => ({
-                _id: u._id,
-                name: u.name,
-                email: u.email,
-            })),
+            user: {
+                _id: user._id,
+                name: user.name,
+                email: user.email,
+               
+            },
         });
     } catch (error) {
-        return res.status(500).json({ success: false, error: error.message });
+        return res.status(500).json({ 
+            success: false, 
+            error: "Server error while fetching profile" 
+        });
     }
 };
-
 // register new user
 const createUser = async (req, res) => {
     try {
