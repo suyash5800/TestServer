@@ -7,13 +7,13 @@ import jwt from "jsonwebtoken";
 // get all users (protected route)
 const getuser = async (req, res) => {
     try {
-       
+
         const user = await User.findById(req.userId).select("-password");
 
         if (!user) {
-            return res.status(404).json({ 
-                success: false, 
-                message: "User profile not found" 
+            return res.status(404).json({
+                success: false,
+                message: "User profile not found"
             });
         }
 
@@ -23,13 +23,13 @@ const getuser = async (req, res) => {
                 _id: user._id,
                 name: user.name,
                 email: user.email,
-               
+
             },
         });
     } catch (error) {
-        return res.status(500).json({ 
-            success: false, 
-            error: "Server error while fetching profile" 
+        return res.status(500).json({
+            success: false,
+            error: "Server error while fetching profile"
         });
     }
 };
@@ -97,17 +97,14 @@ const loginUser = async (req, res) => {
             { expiresIn: "1d" }
         );
 
-       res.cookie("token", token);
-
-        return res.status(200).json({
-            success: true,
-            token: token,
-            user: {
-                _id: user._id,
-                name: user.name,
-                email: user.email
-            }
+        res.cookie("token", token, {
+            httpOnly: true,     // Protects against XSS
+            secure: true,       // Required for sameSite: "none"
+            sameSite: "none",   // Allows cross-site cookie sharing (Vercel to Render)
+            maxAge: 24 * 60 * 60 * 1000 // 1 day
         });
+
+
 
     } catch (error) {
         return res.status(500).json({ success: false, error: error.message });
