@@ -19,6 +19,7 @@ const allowedOrigins = [
   "http://localhost:5173",
   "https://um-stay-client.vercel.app"
 ];
+app.options("*", cors());
 app.use(cookieParser())
 app.use(express.json());
 app.use(cors({
