@@ -6,7 +6,7 @@ import cookieParser from "cookie-parser";
 import authController from "../Controller/auth_controller.js";
 import connectDb from "../Database_connection/dbconnection.js";
 import  authmiddleware from "../middelware/verifytoken.js";
-
+import auth_conDelete from "../Controller/auth_conDelete.js"
 dotenv.config();
 
 const app = express();
@@ -41,5 +41,7 @@ app.get("/getUser", authmiddleware ,authController.getuser);
 
 app.post("/login",authController.loginUser);
 app.post("/registor",authController.createUser);
+app.delete("/delete/:id" ,auth_conDelete.DeleteUser);
+app.delete("/deleteAll" ,auth_conDelete.DeleteAll);
 
 app.listen(PORT ,()=>{console.log(`server is running on port ${PORT}`)});
