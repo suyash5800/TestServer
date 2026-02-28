@@ -1,13 +1,14 @@
 import jwt from "jsonwebtoken";
 
 const authmiddleware = (req,res,next) => {
-    const token = req.cookies.token;
+    const header = req.headers.authorization;
 
-    if (!token) {
+
+    if (!header) {
         return res.status(401).json({success:false, message: "No token" });
     }
 
-
+    const token = header.split(" ")[1];
     try {
         const decoded = jwt.verify(token, process.env.JWT_KEY);
         req.userId = decoded.id;
