@@ -7,6 +7,7 @@ import authController from "../Controller/auth_controller.js";
 import connectDb from "../Database_connection/dbconnection.js";
 import  authmiddleware from "../middelware/verifytoken.js";
 import auth_conDelete from "../Controller/auth_conDelete.js"
+import auth_conUpdate from "../Controller/auth_conUpdate.js";
 dotenv.config();
 
 const app = express();
@@ -43,5 +44,6 @@ app.post("/login",authController.loginUser);
 app.post("/registor",authController.createUser);
 app.delete("/delete/:id" ,auth_conDelete.DeleteUser);
 app.delete("/deleteAll" ,auth_conDelete.DeleteAll);
+app.put("/update/:id" ,auth_conUpdate.update);
 
 app.listen(PORT ,()=>{console.log(`server is running on port ${PORT}`)});
