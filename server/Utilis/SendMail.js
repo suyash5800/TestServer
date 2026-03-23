@@ -4,7 +4,9 @@ const sendOtp = async (email, otp) => {
     try {
 
         const transporter = nodemailer.createTransport({
-            service: "gmail",
+            host: "smtp.gmail.com",
+            port: 465,
+            secure: true,
             auth: {
                 user: process.env.Mailer_mail,
                 pass: process.env.Mailer_pass,
@@ -36,9 +38,10 @@ Um-Stay service Team.
 
 
     } catch (error) {
-        console.log("Email error :", error);
+        console.log("FULL EMAIL ERROR:", error);
+        console.log("MAIL:", process.env.Mailer_mail);
+        console.log("PASS:", process.env.Mailer_pass);
         return false;
-
     }
 }
 
