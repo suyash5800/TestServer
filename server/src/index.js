@@ -47,7 +47,7 @@ app.post("/registor",authController.createUser);
 app.delete("/delete/:id" ,auth_conDelete.DeleteUser);
 app.delete("/deleteAll" ,auth_conDelete.DeleteAll);
 app.put("/update/:id" ,auth_conUpdate.update);
-app.post("/sendEmail", auth_conSendMail.reqPassRest );
+app.post("/sendEmail", auth_conSendMail.reqOTP );
 app.post("/verifyOTP" , auth_conSendMail.verifyOTP);
 
 app.listen(PORT ,()=>{console.log(`server is running on port ${PORT}`)});

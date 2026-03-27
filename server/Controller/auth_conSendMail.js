@@ -1,7 +1,8 @@
 import sendOtp from "../Utilis/SendMail.js";
 import otp from "../Models/otp.js";
+import bcrypt from "bcrypt";
 
-const reqPassRest = async (req, res) => {
+const reqOTP = async (req, res) => {
     try {
         const email = req.body.email.trim().toLowerCase();
 
@@ -11,8 +12,10 @@ const reqPassRest = async (req, res) => {
         console.log(existingOtp);
         await otp.deleteOne({ email });
 
+        const hashotp = await bcrypt.hash(genOTP,10);
+
         const newotp = new otp({
-            email, otp: genOTP,
+            email, otp: hashotp,
             expiresAt: new Date(Date.now() + 5 * 60 * 1000)
         });
         await newotp.save();
@@ -21,7 +24,7 @@ const reqPassRest = async (req, res) => {
 
         if (sent) {
             console.log(genOTP);
-            return  res.status(200).json({ success: true, message: "Check your email!" });
+            return res.status(200).json({ success: true, message: "Check your email!" });
         } else {
             res.status(500).json({ success: false, message: "Email failed" });
         }
@@ -38,15 +41,18 @@ const reqPassRest = async (req, res) => {
 const verifyOTP = async (req, res) => {
     try {
 
-        const { email, code } = req.body;
+        const email = req.body.email.trim().toLowerCase();
+        const code = req.body.code;
 
         const userExist = await otp.findOne({ email });
         if (!userExist) {
-            return res.status(400).json({ success: false, message: "mail not found" });
+            return res.status(404).json({ success: false, message: "mail not found" });
 
-        }
+        } 
 
-        if (userExist.otp !== code) {
+         const ismatch = bcrypt.compare(code , userExist.otp);
+
+        if (!ismatch) {
             return res.status(400).json({ success: false, message: "OTP doesn't match " });
         }
 
@@ -63,4 +69,4 @@ const verifyOTP = async (req, res) => {
 
 }
 
-export default { reqPassRest, verifyOTP }; 
+export default { reqOTP, verifyOTP }; 
