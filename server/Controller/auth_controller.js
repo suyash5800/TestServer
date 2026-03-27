@@ -41,8 +41,8 @@ const getuser = async (req, res) => {
 
 const createUser = async (req, res) => {
     try {
-        const { name, email, password } = req.body;
-        if (!name || !email || !password) {
+        const { name, email, password ,phone  } = req.body;
+        if (!name || !email || !password || phone ) {
             return res.status(400).json({ message: "Name, email and password are required" });
         }
         const existing = await User.findOne({ email });
@@ -53,7 +53,7 @@ const createUser = async (req, res) => {
         const hashpass = await bcrypt.hash(password, 10);
 
 
-        const newuser = new User({ name, email, password: hashpass });
+        const newuser = new User({ name, email,phone, password: hashpass  });
         await newuser.save();
 
         return res.status(201).json({

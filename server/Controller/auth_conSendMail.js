@@ -1,25 +1,26 @@
 import sendOtp from "../Utilis/SendMail.js";
-import User from "../Models/User.js";
+import otp from "../Models/otp.js";
 
 const reqPassRest = async (req, res) => {
     try {
-        const { email } = req.body;
+        const email = req.body.email.trim().toLowerCase();
 
-        const userExist = await User.findOne({ email: email });
-        if (!userExist) {
-            return res.status(404).json({ success: true, message: "User not Found " });
-        }
 
-        const otp = Math.floor(100000 + Math.random() * 900000).toString();
+        const genOTP = Math.floor(100000 + Math.random() * 900000).toString();
+        const existingOtp = await otp.findOne({ email });
+        console.log(existingOtp);
+        await otp.deleteOne({ email });
 
-        userExist.otp = otp;
-        userExist.otpExpireTime = Date.now() + 10 * 60 * 1000;
+        const newotp = new otp({
+            email, otp: genOTP,
+            expiresAt: new Date(Date.now() + 5 * 60 * 1000)
+        });
+        await newotp.save();
 
-        await userExist.save();
-        
-        const sent = await sendOtp(email,otp);
+        const sent = await sendOtp(email, genOTP);
 
         if (sent) {
+            console.log(genOTP);
             res.status(200).json({ success: true, message: "Check your email!" });
         } else {
             res.status(500).json({ success: false, message: "Email failed" });
@@ -28,10 +29,38 @@ const reqPassRest = async (req, res) => {
 
 
     } catch (error) {
-        return res.status(500).json({ success: false, error:error.message });
+        return res.status(500).json({ success: false, error: error.message });
 
     }
 
 }
 
-export default reqPassRest;
+const verifyOTP = async (req, res) => {
+    try {
+
+        const { email, code } = req.body;
+
+        const userExist = await otp.findOne({ email });
+        if (!userExist) {
+            return res.status(400).json({ success: false, message: "mail not found" });
+
+        }
+
+        if (userExist.otp !== code) {
+            return res.status(400).json({ success: false, message: "OTP doesn't match " });
+        }
+
+        if (userExist.expiresAt < new Date()) {
+            return res.status(400).json({ success: false, message: "OTP expired" });
+        }
+
+        return res.status(200).json({ success: true, message: "OTP is verifyed" });
+
+    } catch (error) {
+        return res.status(500).json({ sucess: false, error: error.message });
+
+    }
+
+}
+
+export default { reqPassRest, verifyOTP }; 
