@@ -42,7 +42,7 @@ const getuser = async (req, res) => {
 const createUser = async (req, res) => {
     try {
         const { name, email, password ,phone  } = req.body;
-        if (!name || !email || !password || phone ) {
+        if (!name || !email || !password || !phone ) {
             return res.status(400).json({ message: "Name, email and password are required" });
         }
         const existing = await User.findOne({ email });
