@@ -21,7 +21,7 @@ const reqPassRest = async (req, res) => {
 
         if (sent) {
             console.log(genOTP);
-            res.status(200).json({ success: true, message: "Check your email!" });
+            return  res.status(200).json({ success: true, message: "Check your email!" });
         } else {
             res.status(500).json({ success: false, message: "Email failed" });
         }
